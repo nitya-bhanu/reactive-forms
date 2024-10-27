@@ -1,0 +1,45 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="form-container">
+    <h2>User Registration</h2>
+  
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" class="form-control" />
+      <div *ngIf="userForm.get('name')?.invalid && (userForm.get('name')?.touched || userForm.get('name')?.dirty)" class="error-messages">
+        <small *ngIf="userForm.get('name')?.errors?.['required']">Name is required.</small>
+        <small *ngIf="userForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters long.</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" class="form-control" />
+      <div *ngIf="userForm.get('email')?.invalid && (userForm.get('email')?.touched || userForm.get('email')?.dirty)" class="error-messages">
+        <small *ngIf="userForm.get('email')?.errors?.['required']">Email is required.</small>
+        <small *ngIf="userForm.get('email')?.errors?.['email']">Invalid email format.</small>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" formControlName="password" class="form-control" />
+      <div *ngIf="userForm.get('password')?.invalid && (userForm.get('password')?.touched || userForm.get('password')?.dirty)" class="error-messages">
+        <small *ngIf="userForm.get('password')?.errors?.['required']">Password is required.</small>
+        <small *ngIf="userForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</small>
+      </div>
+    </div>
+  
+    <div formArrayName="hobbies">
+      <label>Hobbies:</label>
+      <div *ngFor="let hobby of hobbies.controls; let i = index" class="form-group">
+        <input [formControlName]="i" class="form-control" />
+        <button type="button" (click)="removeHobby(i)" class="remove-hobby-btn">Remove</button>
+        <div *ngIf="hobbies.at(i).invalid && (hobbies.at(i).touched || hobbies.at(i).dirty)" class="error-messages">
+          <small *ngIf="hobbies.at(i).errors?.['required']">Hobby is required.</small>
+        </div>
+      </div>
+      <button type="button" (click)="addHobby()" class="add-hobby-btn">Add Hobby</button>
+    </div>
+  
+    <button type="submit" [disabled]="userForm.invalid" class="submit-btn">Submit</button>
+  </form>
+  
